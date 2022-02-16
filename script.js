@@ -35,7 +35,11 @@ notesList.addEventListener('click', function (event) {
 button1.addEventListener('click', function (event) {
     event.preventDefault()
     console.log("Submit was clicked!")
+    if (document.getElementById("currentTitle").value === '' || document.getElementById("currentBody").value === '') {
+        return
+    } else {
     createNote(event)
+    }
 })
 
 button2.addEventListener('click', function (event) {
