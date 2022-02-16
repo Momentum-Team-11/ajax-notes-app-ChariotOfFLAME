@@ -7,6 +7,7 @@ const button1 = document.getElementById('button1')
 const button2 = document.getElementById('button2')
 const button3 = document.getElementById('button3')
 let noteId
+let date
 
 function listNotes() {
     document.getElementById("notes-list").innerHTML = ''
@@ -20,6 +21,27 @@ function listNotes() {
             }
     })
 }
+
+function renderNote(noteObj) {
+    const itemEl = document.createElement('li')
+    itemEl.id = noteObj.id
+    itemEl.classList.add(
+    'lh-copy',
+    'pv3',
+    'ba',
+    'bl-0',
+    'bt-0',
+    'br-0',
+    'b--dotted',
+    'b--black-3'
+    )
+    itemEl.innerHTML = `<span class="dib w-60">${noteObj.title}</span><i alt="delete note" class="ml2 dark-red fas fa-times delete"></i><i alt="edit note" class="ml3 fas fa-edit edit"></i><br><p>${noteObj.date}</p>`
+    notesList.prepend(itemEl)
+}
+
+
+
+listNotes()
 
 notesList.addEventListener('click', function (event) {
     event.preventDefault()
@@ -60,36 +82,20 @@ button3.addEventListener('click', function (event) {
 
 
 
-// I'm doing this work in more than one place, so it's helpful to put it in a function rather than repeat it!
-function renderNote(noteObj) {
-    const itemEl = document.createElement('li')
-    itemEl.id = noteObj.id
-    itemEl.classList.add(
-    'lh-copy',
-    'pv3',
-    'ba',
-    'bl-0',
-    'bt-0',
-    'br-0',
-    'b--dotted',
-    'b--black-3'
-    )
-    itemEl.innerHTML = `<span class="dib w-60">${noteObj.title}</span><i alt="delete note" class="ml2 dark-red fas fa-times delete"></i><i alt="edit note" class="ml3 fas fa-edit edit"></i>`
-    notesList.prepend(itemEl)
-}
-// call this when the script first runs (on page load)
-// This runs only on the first load!
-listNotes()
+
+
 
 function createNote() {
     const noteTitle = document.querySelector('#currentTitle')
     const noteText = document.querySelector('#currentBody')
+    date = Date()
     fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
             title: noteTitle.value,
             body: noteText.value,
+            date: date,
         }),
     })
         .then((res) => res.json())
@@ -130,13 +136,15 @@ function editMode(element) {
 function editNote() {
     const noteTitle = document.querySelector('#currentTitle')
     const noteText = document.querySelector('#currentBody')
-    document.getElementById(`${noteId}`).innerHTML = `<span class="dib w-60">${noteTitle.value}</span><i alt="delete note" class="ml2 dark-red fas fa-times delete"></i><i alt="edit note" class="ml3 fas fa-edit edit"></i>`
+    date = Date()
+    document.getElementById(`${noteId}`).innerHTML = `<span class="dib w-60">${noteTitle.value}</span><i alt="delete note" class="ml2 dark-red fas fa-times delete"></i><i alt="edit note" class="ml3 fas fa-edit edit"></i><br><p>${date}</p>`
     fetch(`http://localhost:3000/notes/${noteId}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
             title: noteTitle.value,
             body: noteText.value,
+            date: date,
         })
     })
     document.getElementById("new-edit").innerText = "New Note"
