@@ -3,6 +3,10 @@
 const url = 'http://localhost:3000/notes'
 const notesList = document.getElementById('notes-list')
 const notesForm = document.getElementById('notes-form')
+const button1 = document.getElementById('button1')
+const button2 = document.getElementById('button2')
+const button3 = document.getElementById('button3')
+let noteId
 
 function listNotes() {
     document.getElementById("notes-list").innerHTML = ''
@@ -17,18 +21,39 @@ function listNotes() {
     })
 }
 
-notesForm.addEventListener('submit', function (event) {
-    event.preventDefault()
-    createNote(event)
-})
-
 notesList.addEventListener('click', function (event) {
+    event.preventDefault()
     if (event.target.classList.contains('delete')) {
         deleteNote(event.target)
     }
     if (event.target.classList.contains('edit'))
         editMode(event.target)
 })
+
+
+
+button1.addEventListener('click', function (event) {
+    event.preventDefault()
+    console.log("Submit was clicked!")
+    createNote(event)
+})
+
+button2.addEventListener('click', function (event) {
+    event.preventDefault()
+    editNote(event)
+})
+
+button3.addEventListener('click', function (event) {
+    event.preventDefault()
+    console.log("Cancel was clicked!")
+    document.getElementById("new-edit").innerText = "New Note"
+    noteTitle.value = ''
+    noteText.value = ''
+    button1.style = "display: block;"
+    button2.style = "display: none;"
+    button3.style = "display: none;"
+})
+
 
 
 // I'm doing this work in more than one place, so it's helpful to put it in a function rather than repeat it!
@@ -53,24 +78,22 @@ function renderNote(noteObj) {
 listNotes()
 
 function createNote() {
-        const noteTitle = document.querySelector('#currentTitle')
-        const noteText = document.querySelector('#currentBody')
-        fetch(url, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                title: noteTitle.value,
-                body: noteText.value,
-            }),
-        })
-            .then((res) => res.json())
-            .then((data) => {
-            // what I get back from the server IS the newly created note object
-        // So I can take that data and create a new note item in the DOM
-        renderNote(data)
-        })
-        noteTitle.value = ''
-        noteText.value = ''
+    const noteTitle = document.querySelector('#currentTitle')
+    const noteText = document.querySelector('#currentBody')
+    fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            title: noteTitle.value,
+            body: noteText.value,
+        }),
+    })
+        .then((res) => res.json())
+        .then((data) => {
+    renderNote(data)
+    })
+    noteTitle.value = ''
+    noteText.value = ''
 }
 
 function deleteNote(element) {
@@ -83,22 +106,12 @@ function deleteNote(element) {
 }
 
 function editMode(element) {
-    // notesForm.removeEventListener('click', function (event)) {}
-    const noteId = element.parentElement.id
-    
+    noteId = element.parentElement.id
+    button1.style = "display: none;"
+    button2.style = "display: row;"
+    button3.style = "display: row;"
     //replace current form with edit form
-    document.getElementById('current-note').innerHTML = `
-    <h2 id="new-edit">Edit Note</h2>
-        <form id="edit-form">
-        <label for="currentTitle">Title:</label>
-        <input type="text" id="currentTitle" name="currentTitle" placeholder="Put your title here..." required><br>
-        <textarea id="currentBody" class="note-input" name="currentBody" rows="10" cols="100" placeholder="Write your note here..."></textarea><br>
-        <input id="button" type="submit" class="edit" value="Edit">
-        <input id="button" type="submit" class="cancel" value="Cancel">
-    </form>
-    `
-
-    const editForm = document.getElementById('edit-form')
+    document.getElementById("new-edit").innerText = "Edit Note"
 
     fetch(`http://localhost:3000/notes/${noteId}`)
     .then((res) => res.json())
@@ -108,47 +121,24 @@ function editMode(element) {
         currentTitle.value = data.title
         currentBody.value = data.body
         })
-        
-        editForm.addEventListener('click', function (event) {
-        event.preventDefault()
-        if (event.target.classList.contains('cancel')) {
-            document.getElementById('current-note').innerHTML = `
-            <h2 id="new-edit">New Note</h2>
-            <form id="notes-form">
-                <label for="currentTitle">Title:</label>
-                <input type="text" id="currentTitle" name="currentTitle" placeholder="Put your title here..." required><br>
-                <textarea id="currentBody" class="note-input" name="currentBody" rows="10" cols="100" placeholder="Write your note here..."></textarea><br>
-                <input id="button" type="submit" name="submit" value="Submit">
-            </form>
-            `
-        }
-        if (event.target.classList.contains('edit'))
-            editNote(event)
-            })
-        
-        function editNote() {
-            const noteTitle = document.querySelector('#currentTitle')
-            const noteText = document.querySelector('#currentBody')
-            document.getElementById(`${noteId}`).innerHTML = `<span class="dib w-60">${noteTitle.value}</span><i alt="delete note" class="ml2 dark-red fas fa-times delete"></i><i alt="edit note" class="ml3 fas fa-edit edit"></i>`
-            fetch(`http://localhost:3000/notes/${noteId}`, {
-                method: 'PATCH',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    title: noteTitle.value,
-                    body: noteText.value,
-                })
-            })
-        document.getElementById('current-note').innerHTML = `
-        <h2 id="new-edit">New Note</h2>
-        <form id="notes-form">
-            <label for="currentTitle">Title:</label>
-            <input type="text" id="currentTitle" name="currentTitle" placeholder="Put your title here..." required><br>
-            <textarea id="currentBody" class="note-input" name="currentBody" rows="10" cols="100" placeholder="Write your note here..."></textarea><br>
-            <input id="button" type="submit" name="submit" value="Submit">
-        </form>
-        `
-        }
 }
 
-
-// function 
+function editNote() {
+    const noteTitle = document.querySelector('#currentTitle')
+    const noteText = document.querySelector('#currentBody')
+    document.getElementById(`${noteId}`).innerHTML = `<span class="dib w-60">${noteTitle.value}</span><i alt="delete note" class="ml2 dark-red fas fa-times delete"></i><i alt="edit note" class="ml3 fas fa-edit edit"></i>`
+    fetch(`http://localhost:3000/notes/${noteId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            title: noteTitle.value,
+            body: noteText.value,
+        })
+    })
+    document.getElementById("new-edit").innerText = "New Note"
+    noteTitle.value = ''
+    noteText.value = ''
+    button1.style = "display: block;"
+    button2.style = "display: none;"
+    button3.style = "display: none;"
+}
