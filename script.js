@@ -1,5 +1,3 @@
-/* Must have -- MVP (minimum viable product) */
-// need to show a list of existing notes
 const url = 'http://localhost:3000/notes'
 const notesList = document.getElementById('notes-list')
 const notesForm = document.getElementById('notes-form')
@@ -25,24 +23,16 @@ function listNotes() {
 function renderNote(noteObj) {
     const itemEl = document.createElement('li')
     itemEl.id = noteObj.id
-    itemEl.classList.add(
-    'lh-copy',
-    'pv3',
-    'ba',
-    'bl-0',
-    'bt-0',
-    'br-0',
-    'b--dotted',
-    'b--black-3'
-    )
+    itemEl.classList.add('lh-copy','pv3','ba','bl-0','bt-0','br-0','b--dotted','b--black-3')
     itemEl.innerHTML = `<span class="dib w-60">${noteObj.title}</span><i alt="delete note" class="ml2 dark-red fas fa-times delete"></i><i alt="edit note" class="ml3 fas fa-edit edit"></i><br><p>${noteObj.date}</p>`
     notesList.prepend(itemEl)
 }
 
 
-
+//List notes at top of page
 listNotes()
 
+//Make delete and edit icons clicky
 notesList.addEventListener('click', function (event) {
     event.preventDefault()
     if (event.target.classList.contains('delete')) {
@@ -53,10 +43,12 @@ notesList.addEventListener('click', function (event) {
 })
 
 
-
+//make submit button clicky
 button1.addEventListener('click', function (event) {
     event.preventDefault()
     console.log("Submit was clicked!")
+    
+    //If either field is empty, don't submit the note
     if (document.getElementById("currentTitle").value === '' || document.getElementById("currentBody").value === '') {
         return
     } else {
@@ -64,24 +56,25 @@ button1.addEventListener('click', function (event) {
     }
 })
 
+//make edit button clicky
 button2.addEventListener('click', function (event) {
     event.preventDefault()
     editNote(event)
 })
 
+//make cancel button clicky
 button3.addEventListener('click', function (event) {
     event.preventDefault()
     console.log("Cancel was clicked!")
     document.getElementById("new-edit").innerText = "New Note"
+    const noteTitle = document.querySelector('#currentTitle')
+    const noteText = document.querySelector('#currentBody')
     noteTitle.value = ''
     noteText.value = ''
     button1.style = "display: block;"
     button2.style = "display: none;"
     button3.style = "display: none;"
 })
-
-
-
 
 
 
@@ -106,6 +99,8 @@ function createNote() {
     noteText.value = ''
 }
 
+
+
 function deleteNote(element) {
     const noteId = element.parentElement.id
     fetch(`http://localhost:3000/notes/${noteId}`, {
@@ -114,6 +109,8 @@ function deleteNote(element) {
         element.parentElement.remove()
     })
 }
+
+
 
 function editMode(element) {
     noteId = element.parentElement.id
@@ -132,6 +129,8 @@ function editMode(element) {
         currentBody.value = data.body
         })
 }
+
+
 
 function editNote() {
     const noteTitle = document.querySelector('#currentTitle')
