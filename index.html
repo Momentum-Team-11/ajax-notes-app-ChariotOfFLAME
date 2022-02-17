@@ -3,27 +3,32 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&family=Courgette&family=Karma:wght@500&family=Nothing+You+Could+Do&family=Rubik+Mono+One&family=Satisfy&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="https://unpkg.com/tachyons@4.12.0/css/tachyons.min.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
   <!-- <script src="moment.min.js" defer></script> -->
   <script src="script.js" defer></script>
-  <title>Adam's Notes App</title>
+  <title>Bank-Note</title>
 </head>
-  <h1>Notes:</h1>
-  <div id="notes-list-container" class="notes-list-container">
-    <ul id="notes-list" class="notes-list"></ul>
-  </div>
-  <div id="current-note" class="current-note">
-    <h2 id="new-edit">New Note</h2>
-    <form id="notes-form">
-      <label for="currentTitle">Title:</label>
-      <input type="text" id="currentTitle" name="currentTitle" placeholder="Put your title here..." required><br>
-      <textarea id="currentBody" class="note-input" name="currentBody" rows="10" cols="100" placeholder="Write your note here..."></textarea><br>
-      <input id="button1" type="submit" class="submit" value="Submit" style="display: block;">
-      <input id="button2" type="submit" class="edit" value="Edit" style="display: none;">
-      <input id="button3" type="submit" class="cancel" value="Cancel" style="display: none;">
-    </form>
+<body>
+  <div class="right-of-line">
+    <h1>Bank-Note</h1>
+    <div id="notes-list-container" class="notes-list-container">
+      <ul id="notes-list" class="notes-list"></ul>
+    </div>
+    <div id="current-note" class="current-note">
+      <h2 id="new-edit">new note</h2>
+      <form id="notes-form">
+        <label for="currentTitle">Title:</label>
+        <input type="text" id="currentTitle" name="currentTitle" placeholder="Put your title here..." required><br>
+        <textarea id="currentBody" class="note-input" name="currentBody" placeholder="Write your note here..."></textarea><br>
+        <div class="buttons">
+          <input id="button1" type="submit" class="button submit" value="Bank" style="display: block;">
+          <input id="button2" type="submit" class="button edit" value="Bank" style="display: none;">
+          <input id="button3" type="submit" class="button cancel" value="Cancel" style="display: none;">
+        </div>
+      </form>
+    </div>
   </div>
 </body>
 </html>

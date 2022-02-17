@@ -23,8 +23,7 @@ function listNotes() {
 function renderNote(noteObj) {
     const itemEl = document.createElement('li')
     itemEl.id = noteObj.id
-    itemEl.classList.add('lh-copy','pv3','ba','bl-0','bt-0','br-0','b--dotted','b--black-3')
-    itemEl.innerHTML = `<span class="dib w-60">${noteObj.title}</span><i alt="delete note" class="ml2 dark-red fas fa-times delete"></i><i alt="edit note" class="ml3 fas fa-edit edit"></i><br><p>${noteObj.date}</p>`
+    itemEl.innerHTML = `<span class="items">${noteObj.title}</span><i alt="delete note" class="fas fa-times delete"></i><i alt="edit note" class="fas fa-edit edit"></i><br><p>${noteObj.date}</p>`
     notesList.prepend(itemEl)
 }
 
@@ -66,7 +65,7 @@ button2.addEventListener('click', function (event) {
 button3.addEventListener('click', function (event) {
     event.preventDefault()
     console.log("Cancel was clicked!")
-    document.getElementById("new-edit").innerText = "New Note"
+    document.getElementById("new-edit").innerText = "new note"
     const noteTitle = document.querySelector('#currentTitle')
     const noteText = document.querySelector('#currentBody')
     noteTitle.value = ''
@@ -118,7 +117,7 @@ function editMode(element) {
     button2.style = "display: row;"
     button3.style = "display: row;"
     //replace current form with edit form
-    document.getElementById("new-edit").innerText = "Edit Note"
+    document.getElementById("new-edit").innerText = "edit note"
 
     fetch(`http://localhost:3000/notes/${noteId}`)
     .then((res) => res.json())
@@ -136,7 +135,7 @@ function editNote() {
     const noteTitle = document.querySelector('#currentTitle')
     const noteText = document.querySelector('#currentBody')
     date = Date()
-    document.getElementById(`${noteId}`).innerHTML = `<span class="dib w-60">${noteTitle.value}</span><i alt="delete note" class="ml2 dark-red fas fa-times delete"></i><i alt="edit note" class="ml3 fas fa-edit edit"></i><br><p>${date}</p>`
+    document.getElementById(`${noteId}`).innerHTML = `<span class="items">${noteTitle.value}</span><i alt="delete note" class="ml2 dark-red fas fa-times delete"></i><i alt="edit note" class="ml3 fas fa-edit edit"></i><br><p>${date}</p>`
     fetch(`http://localhost:3000/notes/${noteId}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
@@ -146,7 +145,7 @@ function editNote() {
             date: date,
         })
     })
-    document.getElementById("new-edit").innerText = "New Note"
+    document.getElementById("new-edit").innerText = "new note"
     noteTitle.value = ''
     noteText.value = ''
     button1.style = "display: block;"

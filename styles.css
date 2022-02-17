@@ -2,6 +2,112 @@
     margin: 0;
 }
 
+body {
+    background-color: #fff;
+    background-image:
+        linear-gradient(90deg, transparent 79px, #ABCED4 79px, #ABCED4 81px, transparent 81px),
+        linear-gradient(#eee .1em, transparent .1em);
+    background-size: 100% 1.2em;
+}
+
+.right-of-line {
+    margin-left: 90px
+}
+
+h1 {
+    font-size: 6em;
+    font-family: 'Nothing You Could Do', cursive;
+    margin-left: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.notes-list-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.notes-list {
+    background-color: rgba(255, 255, 109, 0.562);
+    padding-right: 50px;
+}
+
+li {
+    border-style: hidden hidden dashed hidden;
+    max-width: 80vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.items {
+    font-family: 'Amatic SC', cursive;
+    font-size: x-large;
+    margin-right: 10vw;
+}
+
+.fas {
+    margin: 5px;
+    align-items: flex-end;
+}
+
+p {
+    font-family: 'Courgette', cursive;
+}
+
+.current-note {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+h2 {
+    font-size: 50px;
+    font-family: 'Nothing You Could Do', cursive;
+    text-decoration: underline; 
+    margin-top: 50px;
+}
+
+#notes-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+label {
+    font-family: 'Courgette', cursive;
+    font-size: 2em;
+}
+
+#currentTitle {
+    border-radius: 0px 10px 0px 10px;
+    font-family: 'Karma', serif;
+    font-size: large;
+    width: 30vw;
+    height: 3vh
+}
+
 textarea {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Karma', serif;
+    border-radius: 0px 25px 0px 25px;
+    font-size: medium;
+    min-width: 400px;
+    min-height: 200px;
+    width: 50vw;
+    height: 50vh;
+}
+
+.buttons {
+    flex-direction: row;
+}
+
+.button {
+    font-family: 'Rubik Mono One', sans-serif;
+    font-size: large;
+    margin-left: 2vw;
+    margin-right: 2vw;
 }
