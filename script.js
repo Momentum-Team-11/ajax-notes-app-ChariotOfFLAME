@@ -7,19 +7,19 @@ const button3 = document.getElementById('button3')
 let noteId
 let date
 
+//clear the unordered list of all html, fetch the list of notes from the db, run a for loop with the data and pass it into the renderNote function
 function listNotes() {
     document.getElementById("notes-list").innerHTML = ''
     fetch(url)
         .then((res) => res.json())
         .then((data) => {
-        // take all the notes
-        // loop through and create a new note item on the page for each one
             for (let noteObj of data) {
                 renderNote(noteObj)
             }
     })
 }
 
+//create a list item, and fill it with the for loop info fetched from the db, formatted as desired via HTML
 function renderNote(noteObj) {
     const itemEl = document.createElement('li')
     itemEl.id = noteObj.id
@@ -76,7 +76,7 @@ button3.addEventListener('click', function (event) {
 })
 
 
-
+//when submit is hit, post the note to the db with the date and time submitted, then clear the input fields
 function createNote() {
     const noteTitle = document.querySelector('#currentTitle')
     const noteText = document.querySelector('#currentBody')
@@ -99,26 +99,34 @@ function createNote() {
 }
 
 
-
+//when the delete icon is clicked, delete the parent note from the db, clear the input fields and make sure the submit button is visable and not the edit and cancel buttons
 function deleteNote(element) {
     const noteId = element.parentElement.id
+    const noteTitle = document.querySelector('#currentTitle')
+    const noteText = document.querySelector('#currentBody')
     fetch(`http://localhost:3000/notes/${noteId}`, {
         method: 'DELETE',
     }).then(function() {
         element.parentElement.remove()
     })
+    document.getElementById("new-edit").innerText = "new note"
+    noteTitle.value = ''
+    noteText.value = ''
+    button1.style = "display: block;"
+    button2.style = "display: none;"
+    button3.style = "display: none;"
 }
 
 
-
+//reveal the edit and cancel buttons, and...
 function editMode(element) {
     noteId = element.parentElement.id
     button1.style = "display: none;"
     button2.style = "display: row;"
     button3.style = "display: row;"
-    //replace current form with edit form
+    //..replace the new note banner with edit note, and...
     document.getElementById("new-edit").innerText = "edit note"
-
+    //fetch the note select by id from the db and place its title and text into the input fields
     fetch(`http://localhost:3000/notes/${noteId}`)
     .then((res) => res.json())
     .then((data) => {
@@ -130,11 +138,12 @@ function editMode(element) {
 }
 
 
-
+//when the edit button is clicked, patch the db at the current note id with the values from the input fields
 function editNote() {
     const noteTitle = document.querySelector('#currentTitle')
     const noteText = document.querySelector('#currentBody')
     date = Date()
+    document.getElementById("new-edit").innerText = "new note"
     document.getElementById(`${noteId}`).innerHTML = `<span class="items">${noteTitle.value}</span><i alt="delete note" class="ml2 dark-red fas fa-times delete"></i><i alt="edit note" class="ml3 fas fa-edit edit"></i><br><p>${date}</p>`
     fetch(`http://localhost:3000/notes/${noteId}`, {
         method: 'PATCH',
